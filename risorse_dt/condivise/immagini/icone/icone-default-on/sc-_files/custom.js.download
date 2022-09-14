@@ -1,0 +1,615 @@
+const welcomeCarousel = "#welcomeCarousel#", widgetClass = ".cx-widget.cx-theme-light ", surveyTypes = ["#SurveyFaces#", "#SurveyStars#"], systemMsgToSee = "###***", scrollObj = {itemsShown: 3};
+const LABELS = {
+	bot_title: "Poste",
+	bot_subtitle: "L’ Assistente digitale di Poste Italiane",
+	connectionErrorTitle: "Poste non è disponibile",
+	connectionErrorDescription: "Momentaneamente la chat non e' disponibile,<br>vi invitiamo a riprovare piu' tardi.",
+	connectionTimeoutTitle: "",
+	connectionTimeoutDescription: "Mi trovi qui se hai ancora bisogno.",
+	operator_title: "",
+	operator_subtitle: "Chat Live di Poste Italiane",
+	privacyText: "Ciao. Ti informo che Poste Italiane S.p.A., in qualità di Titolare del trattamento, utilizzerà i tuoi dati personali in conformità alla normativa privacy. Puoi consultare l’informativa completa sul sito <a href=\"https://www.poste.it/privacy-policy.html\">www.poste.it/privacy-policy.html</a>"
+};
+var chat_Extension, chat_closed, environment, ipAddress, isBot = true, firstOperatorBaloon = 0, actualPage = location.href;
+var chatButton = {
+	endAfter: 10000,
+	pingAfter: 1000,
+	startAfter: 30000,
+	timeout: 0
+};
+var botWaiting = {
+	startAfter: 40000,
+	timeout: 0
+};
+var botPause = {
+	startAfter: 120000,
+	timeout: 0
+};
+var headerSetter = {
+	startAfter: 100,
+	timeout: 0
+};
+var override = {
+	done: false,
+	startAfter: 100,
+	timeout: 0
+};
+
+function isNull(obj){
+	return obj === null || obj === undefined || obj === "";
+}
+
+function equals(obj1, obj2){
+	if(isNull(obj1)){
+		obj1 = undefined;
+	}
+	if(isNull(obj2)){
+		obj2 = undefined;
+	}
+	return String(obj1).toLowerCase() === String(obj2).toLowerCase();
+}
+
+function setWidget(token, refreshToken, context, mode) {
+	if(mode){
+		environment = {
+			baseUrl: "https://widget.poste.it",
+			localPath: "https://widget.poste.it/",
+			url: "https://widget.poste.it"
+		};
+	}else{
+		for(var i = 0; i < environments.length; i++){
+			if(actualPage.indexOf(environments[i].mark) > -1){
+				environment = environments[i];
+				break;
+			}
+		}
+		if(!environment){
+			environment = environments[environments.length - 1];
+		}
+		environment.localPath = environment.baseUrl + "/";
+	}
+	
+	if (!window._genesys) {
+		window._genesys = {};
+	}
+	window._genesys.widgets = {
+		main : {
+			debug : false,
+			theme : "light",
+			i18n : environment.baseUrl + "/json/widgetLabels.json",
+			lang : "it",
+			customStylesheetID : "genesys_widget_custom",
+			timeFormat: 24,
+			downloadGoogleFont: false
+		},
+		webchat : {
+			apikey : "",
+			dataURL : environment.url + "/genesys/2/chat/bot/",
+			userData : {
+				ChatBotID: "msbf-connector",
+				ChatBotName: "Anna",
+				Visibility: "ALL",
+				Nickname: "Poste",
+				ChatBotHoldup: true,
+				StopBotOnAgentArrival: false,
+				StopBotOnCustomerLeft: true,
+				Token: token,
+				RefreshToken: refreshToken,
+				Context: context
+			},
+			ajaxTimeout: 10000,
+			emojis : false,
+			uploadsEnabled : false,
+			confirmFormCloseEnabled : true,
+			actionsMenu : false,
+			maxMessageLength : 140,
+			proactive : {
+				enabled : true,
+				idleTimer : 1000,
+				cancelTimer : 30
+			},
+			chatButton : {
+				enabled : true,
+				template : "<div class=\"chatIcon\" onclick=\"openChat()\"></div>",
+				openDelay : 0,
+				effectDuration : 300,
+				hideDuringInvite : true
+			}
+		}
+	};
+	
+	if (!window._genesys.widgets.extensions) {
+		window._genesys.widgets.extensions = {};
+	}
+
+	window._genesys.widgets.extensions.chatExtension = function($, CXBus) {
+		chat_Extension = CXBus.registerPlugin("chatExtension");
+		chat_Extension.subscribe('WebChat.ready', function(){
+			window.console.log("CHAT READY");
+			chatStatusReset();
+		});
+		chat_Extension.subscribe('WebChat.started', function(){
+			window.console.log("CHAT STARTED");
+		});
+		chat_Extension.subscribe('WebChatService.error', setErrorMessage);
+		chat_Extension.subscribe('WebChatService.chatServerWentOffline', setErrorMessage);
+		chat_Extension.subscribe('WebChatService.agentTypingStarted', function(){
+			if(!isBot){
+				setDialogOperator(true);
+			}
+		});
+		chat_Extension.subscribe('WebChat.messageAdded', function(e){
+			endChatAlertOverride();
+			chat_closed = false;
+			$("#connectionTimeout").hide();
+			clearTimeout(botWaiting.timeout);
+			clearTimeout(botPause.timeout);
+			var chatBody = $(".cx-transcript");
+			var messages = chatBody.children();
+			if(messages.length > 0){
+				var toScroll = messages.eq(-1)[0].offsetHeight + messages.eq(-1)[0].offsetTop;
+				chatBody.animate({scrollTop : toScroll.toString()}, 0);
+			}
+			
+			$(".waiting").removeClass("waiting");
+			if(equals(e.data.data.type, "External")){
+				if(e.data.data.text.indexOf(systemMsgToSee) >= 0){
+					dialogUpdate(e.data.id, e.data.data.text, e.data.data.text.replace(systemMsgToSee, ""), true);
+				}
+				window.console.log("System Message: " + e.data.data.text);
+			}else if(equals(e.data.data.type, "Agent")){
+				var text = e.data.data.text;
+				var newText = searchAndLinkify(text);
+				if(!equals(text, newText)){
+					dialogUpdate(e.data.id, text, newText, false);
+				}else if(text.indexOf("#Survey") > -1){
+					for(var i = 0; i < surveyTypes.length; i++){
+						if(text.indexOf(surveyTypes[i]) > -1){
+							buildSurvey(e.data.id, text, i);
+							break;
+						}
+					}
+				}else if(text.indexOf(welcomeCarousel) > -1){
+					buildWelcomeCarousel(e.data.id, text);
+				}
+				
+				if(isBot){
+					isBot = e.data.data.originalMessage && e.data.data.originalMessage.eventAttributes ? equals(e.data.data.originalMessage.eventAttributes.GCTI_SYSTEM["party-info"].style, "BOT") : false;
+					if(isBot){
+						firstOperatorBaloon++;
+						botHeader();
+						var bot_avatars = getCurrentAvatars();
+						botWaiting.timeout = setTimeout(function(){
+							bot_avatars.eq(-1).addClass("waiting");
+						}, botWaiting.startAfter);
+						botPause.timeout = setTimeout(function(){
+							connectionTimeout();
+						}, botPause.startAfter);
+					}else{
+						LABELS.operator_title = e.data.data.name;
+						operatorHeader();
+					}
+				}
+				if(!isBot){
+					setDialogOperator(false);
+				}
+			}
+		});
+		chat_Extension.subscribe('WebChat.closed', function(){
+			window.console.log("CHAT CLOSED");
+			chatStatusReset();
+		});
+	};
+	$.get("https://api.ipify.org").fail(function(response){
+		ipAddress = "Not Found";
+		invoke();
+	}).then(function(data){
+		if(data){
+			ipAddress = data;
+		}
+		invoke();
+	});
+}
+
+function buildWelcomeCarousel(id, text){
+	var realText = [];
+	const textToClean = text.split("<a href");
+	for(var i = 0, textPart; i < textToClean.length; i++){
+		textPart = textToClean[i];
+		if(equals(i % 2, 1)){
+			textPart = textPart.split("</a>")[0].split(">")[1] + textPart.split("</a>")[1];
+		}
+		realText.push(textPart);
+	}
+	const items = realText.join("").replace(welcomeCarousel + "|", "").split("_|_");
+	var newText = ["<span id=\"welcomeCarouselContent\"><span class=\"arrow left\" onclick=\"scrollWelcomeCarousel(true)\"></span>"];
+	newText.push("<span class=\"arrow right\" onclick=\"scrollWelcomeCarousel(false)\"></span><span id=\"welcomeCarouselSlider\"><span id=\"welcomeCarousel\">");
+	for(var i = 0, itemParts; i < items.length; i++){
+		itemParts = items[i].split("|");
+		newText = newText.concat(["<button title=\"", itemParts[1], "\" class=\"cx-button welcomeCarouselBtn \" onclick=\"sendMessage('", id, "', '", itemParts[2], "')\">"]);
+		newText = newText.concat(["<img alt=\"", itemParts[1], "\" src=\"", itemParts[0], "\"><p>", itemParts[1], "</p></button>"]);
+	}
+	newText.push("</span></span></span>");
+	scrollObj.times = 0;
+	dialogUpdate(id, text, newText.join(""), false);
+}
+
+function arrowsUpdate(){
+	$("#welcomeCarouselContent .arrow").show();
+	if(equals(scrollObj.times, 0)){
+		$("#welcomeCarouselContent .arrow.left").hide();
+	}
+	if(equals(scrollObj.times, $("#welcomeCarouselSlider button").length - scrollObj.itemsShown)){
+		$("#welcomeCarouselContent .arrow.right").hide();
+	}
+}
+
+function scrollWelcomeCarousel(goLeft){
+	if(goLeft && scrollObj.times > 0){
+		scrollObj.times--;
+	}else if(!goLeft && scrollObj.times < $("#welcomeCarouselSlider button").length - scrollObj.itemsShown){
+		scrollObj.times++;
+	}else{
+		return;
+	}
+	const slider = $("#welcomeCarouselSlider");
+	slider.stop();
+	slider.animate({scrollLeft : scrollObj.width*scrollObj.times}, 800, arrowsUpdate);
+}
+
+function buildSurvey(id, text, type){
+	const textParts = text.replace(surveyTypes[type], "").split("|");
+	var votes, newText = "";
+	for(var i = 1; i < textParts.length; i++){
+		newText += "<button title=\"" + textParts[i] + "\" class=\"cx-button ";
+		if(equals(type, 0)){
+			newText += "face face" + i + "\" onclick=\"sendMessage('" + id + "', '" + textParts[0] + textParts[i] + "')\">";
+		}else if(equals(type, 1)){
+			votes = textParts[i].split("_");
+			newText += "star unclicked\" onclick=\"starClicked('" + id + "', " + i + ", '" + textParts[0] + votes[1] + "')\">" + votes[0];
+		}
+		newText += "</button>";
+	}
+	dialogUpdate(id, text, newText, false);
+}
+
+function dialogUpdate(id, text, newText, isSystemMessage){
+	var dialog = $("#" + id);
+	if(dialog.length > 0){
+		dialog.html(dialog.html().replace(text, newText));
+		dialog.css("opacity", "1");
+		if(isSystemMessage){
+			dialog.attr("class", "cx-message cx-participant cx-them cx-Agent cx-agent");
+		}
+		var buttons = $("#" + id + " .cx-button");
+		if(buttons.length > 0){
+			if(buttons.eq(0).hasClass("welcomeCarouselBtn")){
+				dialog.addClass("welcomeCarouselDialog");
+				var btnWidth = parseInt(dialog.width()/scrollObj.itemsShown);
+				scrollObj.width = btnWidth;
+				buttons.css("width", btnWidth);
+				$("#welcomeCarousel").css("width", btnWidth * buttons.length);
+				$("#welcomeCarouselSlider").css("width", btnWidth * scrollObj.itemsShown);
+				arrowsUpdate();
+			}
+			if(buttons.eq(0).hasClass("face") || buttons.eq(0).hasClass("star") || buttons.eq(0).hasClass("welcomeCarouselBtn")){
+				var lastMessageId = $(".cx-message").eq(-1).attr("id");
+				if(!equals(lastMessageId, id)){
+					buttons.addClass("disabled");
+				}
+			}
+		}
+	}else{
+		setTimeout(function(){
+			dialogUpdate(id, text, newText);
+		}, 100);
+	}
+}
+
+function searchAndLinkify(text){
+	if(text.indexOf("](") < 0){
+		return text + "";
+	}
+	var newText = text.substring(0, text.indexOf("["));
+	var linkView = text.substring(text.indexOf("[") + 1, text.indexOf("]"));
+	var textToModify = text.split("]")[1].substring(text.split("]")[1].indexOf("<"));
+	newText += textToModify.substring(0, textToModify.indexOf(">") + 1) + linkView + "</a>";
+	if(text.length > text.indexOf(")") + 1){
+		newText += text.substring(text.indexOf(")") + 1);
+	}
+	return searchAndLinkify(newText);
+}
+
+function getCurrentAvatars(){
+	return $(".cx-avatar.agent, " + widgetClass + ".cx-transcript .cx-message-group>.cx-rich-media");
+}
+
+function setDialogOperator(isTyping){
+	var baloons;
+	var bot_avatars = getCurrentAvatars();
+	if(equals(bot_avatars.length, 0)){
+		return;
+	}
+	if(isTyping){
+		$(".cx-avatar").eq(-1).addClass("operator");
+		$(widgetClass + ".cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble").addClass("operator");
+	}else{
+		baloons = $(widgetClass + ".cx-transcript .cx-message-group>.cx-message.cx-participant.cx-them .cx-bubble, " + widgetClass + ".cx-transcript .cx-message-group>.cx-rich-media .cx-generic");
+		if(firstOperatorBaloon > 0){
+			for(var i = firstOperatorBaloon; i < bot_avatars.length; i++){
+				bot_avatars.eq(i).addClass("operator");
+			}
+			for(i = firstOperatorBaloon; i < baloons.length; i++){
+				baloons.eq(i).addClass("operator");
+			}
+			firstOperatorBaloon = 0;
+		}else{
+			bot_avatars.eq(-1).addClass("operator");
+			baloons.eq(-1).addClass("operator");
+		}
+	}
+}
+
+function setErrorMessage(){
+	$(widgetClass + ".cx-titlebar .cx-icon").css("visibility", "hidden");
+	$("#cx_chat_error_desc").replaceWith("<div id=\"connectionError\"><h1>" + LABELS.connectionErrorTitle + "</h1><p>" + LABELS.connectionErrorDescription + "</p></div>");
+	window.console.log("CHAT ERROR");
+}
+
+function chatStatusReset(){
+	isBot = true;
+	chat_closed = true;
+	startChatAnimation();
+	firstOperatorBaloon = 0;
+	override.done = false;
+}
+
+function hideBotPause(){
+	$("#connectionTimeout").hide();
+	clearTimeout(botPause.timeout);
+	botPause.timeout = setTimeout(function(){
+		connectionTimeout();
+	}, botPause.startAfter);
+}
+
+function linkHandler(e){
+	var target = $(e.target).eq(0);
+	if(!isNull(target.attr("href"))){
+		e.preventDefault();
+		var pageToGo = target.attr("href");
+		var currentPageFirstPart = actualPage.split("#")[0].split("?")[0];
+		var pageToGoFirstPart = pageToGo.split("#")[0].split("?")[0];
+		if(equals(currentPageFirstPart, pageToGoFirstPart)){
+			location.href = pageToGo;
+		}else{
+			window.open(pageToGo, '_blank');
+		}
+	}
+}
+
+function botHeader(){
+	if(!isBot){
+		return;
+	}
+	clearTimeout(chatButton.timeout);
+	var title = $(widgetClass + ".cx-title");
+	if(title.length > 0){
+		title.text(LABELS.bot_title);
+		$(widgetClass + ".cx-subtitle").text(LABELS.bot_subtitle);
+	}else{
+		headerSetter.timeout = setTimeout(botHeader, headerSetter.startAfter);
+	}
+}
+
+function operatorHeader(){
+	clearTimeout(chatButton.timeout);
+	var title = $(widgetClass + ".cx-title");
+	if(title.length > 0){
+		$(".cx-title").text(LABELS.operator_title);
+		$(".cx-subtitle").text(LABELS.operator_subtitle);
+		$(".cx-common-container .cx-titlebar .cx-icon").addClass("operator");
+		setDialogOperator(false);
+	}else{
+		headerSetter.timeout = setTimeout(operatorHeader, headerSetter.startAfter);
+	}
+}
+
+function startChatAnimation(){
+	clearTimeout(chatButton.timeout);
+	var chatIcon = $(widgetClass + ".cx-side-button.chatIcon");
+	if(chat_closed){
+		if(chatIcon.is(":visible")){
+			if(chatIcon.hasClass("animate")){
+				chatButton.timeout = setTimeout(function(){
+					chatIcon.removeClass("animate");
+					startChatAnimation();
+				}, chatButton.endAfter);
+			}else{
+				chatButton.timeout = setTimeout(function(){
+					chatIcon.addClass("animate");
+					startChatAnimation();
+				}, chatButton.startAfter);
+			}
+		}else{
+			chatButton.timeout = setTimeout(function(){
+				chatIcon.removeClass("animate");
+				startChatAnimation();
+			}, chatButton.pingAfter);
+		}
+	}else{
+		chatIcon.removeClass("animate");
+	}
+}
+
+function endChatAlertOverride(){
+	if(override.done){
+		return;
+	}
+	var closeButton = $(widgetClass + ".cx-icon.cx-button-close");
+	clearTimeout(override.timeout);
+	if(equals(closeButton.length, 0)){
+		override.timeout = setTimeout(endChatAlertOverride, override.startAfter);
+	}else{
+		override.done = true;
+		$(widgetClass + ".cx-titlebar .cx-icon").css("visibility", "inherit");
+		closeButton.on("click", function(){
+			if(isBot){
+				$(widgetClass + ".cx-titlebar .cx-icon").addClass("goAway");
+			}
+			$(widgetClass + ".cx-chat-end .cx-end-confirm")[0].addEventListener("click", function(){
+				setTimeout(function(){
+					window.console.log("Forcing closure...");
+					closeButton.click();
+				}, 1000);
+			}, true);
+			$("#connectionTimeout").hide();
+		});
+		$(widgetClass + ".cx-btn-default, .cx-webchat .cx-alert .cx-close-cancel").on("click", function(){
+			clearIconStatus();
+		});
+	}
+}
+
+function openChat(){
+	chat_closed = false;
+	startChatAnimation();
+	chat_Extension.command("WebChat.open", {
+		form: {
+			autoSubmit: false,
+			firstname: "John",
+			lastname: "Doe"
+		},
+		formJSON: {
+			wrapper: "<table></table>",
+			inputs: [
+				{
+					id: "cx_webchat_form_nickname",
+					name: "nickname"
+				},
+				{
+					id: "cx_webchat_form_firstname",
+					name: "firstname"
+				},
+				{
+					id: "cx_webchat_form_lastname",
+					name: "lastname"
+				},
+				{
+					id: "cx_webchat_form_ipaddress",
+					name: "ipaddress"
+				}
+			]
+		}
+	}).done(function() {
+		endChatAlertOverride();
+		clearIconStatus();
+		botHeader();
+		$(widgetClass + ".cx-titlebar .cx-icon>*, .cx-form-inputs tr, .cx-widget .cx-footer>*").addClass("hidden");
+		$("#cx_webchat_form_nickname").attr("value", "User_" + parseInt(Math.random()*1000));
+		$("#cx_webchat_form_ipaddress").attr("value", ipAddress);
+		$(".cx-form-inputs input").attr("readOnly", "readOnly");
+		if(equals($("#privacyText").length, 0)){
+			$(".cx-form-inputs table").append("<tr id=\"privacyText\"><td><p>" + LABELS.privacyText + "</p></td></tr>");
+		}
+		$(".cx-submit.cx-btn").on("click", function() {
+			window.console.log("Connecting...");
+			startChatAnimation();
+		});
+		$(widgetClass)[0].addEventListener("click", linkHandler, true);
+		window.console.log("Ready for Connection");
+	}).fail(function() {
+		window.console.error("Form problem");
+		startChatAnimation();
+	});
+}
+
+function clearIconStatus(){
+	$(widgetClass + ".cx-titlebar .cx-icon").css("visibility", "inherit");
+	$(widgetClass + ".cx-titlebar .cx-icon").removeClass("goAway");
+}
+
+function starClicked(id, index, text){
+	var buttons = $("#" + id + " .cx-button");
+	if(buttons.eq(0).hasClass("disabled")){
+		return;
+	}
+	var stars = $("#" + id + " .cx-button.star");
+	for(var i = 0; i < index; i++){
+		stars.eq(i).removeClass("unclicked");
+	}
+	sendMessage(id, text);
+}
+
+function sendMessage(id, text){
+	var buttons = $("#" + id + " .cx-button");
+	if(buttons.eq(0).hasClass("disabled")){
+		return;
+	}
+	buttons.addClass("disabled");
+	$(widgetClass + " textarea")[0].value = text;
+	$(widgetClass + " .cx-send.cx-icon").click();
+}
+
+function connectionTimeout(){
+	var connectionTimeoutObj = $("#connectionTimeout");
+	if(connectionTimeoutObj.length > 0){
+		connectionTimeoutObj.show();
+	}else{
+		$(".cx-webchat .cx-body>div").append("<div id=\"connectionTimeout\" onclick=\"hideBotPause()\"><div class=\"cx-wrapper\"><div class=\"body\"><h1>" + LABELS.connectionTimeoutTitle + "</h1><p>" + LABELS.connectionTimeoutDescription + "</p></div>");
+		connectionTimeout();
+	}
+}
+
+function invoke() {
+	(function(o) {
+		var d = o.location;
+		var f = function() {
+			o.aTags = o.aTags || [];
+			for (var i = 0; i < o.aTags.length; i++) {
+				var oTag = o.aTags[i];
+				var fs = d.getElementsByTagName(oTag.type)[0], e;
+				if (d.getElementById(oTag.id)){
+					return;
+				}
+				e = d.createElement(oTag.type);
+				e.id = oTag.id;
+				if (equals(oTag.type, "script")) {
+					e.src = oTag.path;
+				} else {
+					e.type = 'text/css';
+					e.rel = 'stylesheet';
+					e.href = oTag.path;
+				}
+				fs.parentNode.insertBefore(e, fs);
+			}
+		}, ol = window.onload;
+		if (o.onload) {
+			window.onload = typeof equals(window.onload, "function") ? f: function() {
+				ol();
+				f();
+			};
+		} else {
+			f();
+		}
+	})({
+		location : document,
+		onload : false,
+		aTags : [ {
+			type : "script",
+			id : "genesys-widgets-script",
+			path : environment.localPath + "js/widgets.min.js"
+		}, {
+			type : "link",
+			id : "genesys_widget_custom_2",
+			path : environment.localPath + "css/chat_custom.css"
+		}, {
+			type : "link",
+			id : "genesys_widget_custom",
+			path : environment.localPath + "css/chat_common.css"
+		}, {
+			type : "link",
+			id : "genesys-widgets-styles",
+			path : environment.localPath + "css/widgets.min.css"
+		}]
+	});
+}

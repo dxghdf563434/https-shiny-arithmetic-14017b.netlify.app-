@@ -1,0 +1,52 @@
+.hidden, .cx-widget.cx-theme-light .cx-titlebar .cx-icon>*, .cx-widget.cx-theme-light .cx-footer>*,
+	.cx-avatar svg, .cx-avatar.user svg, .cx-widget.cx-theme-light .cx-transcript .cx-message.cx-system,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-system .cx-time,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant>.cx-bubble-arrow,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant:first-child>.cx-bubble-arrow,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant:last-child>.cx-bubble-arrow,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them>.cx-bubble-arrow,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble>*,
+	.cx-avatar.user svg, .cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant .cx-bubble>*,
+	.cx-menu-cell, .cx-widget.cx-theme-light .cx-send svg {
+	display: none !important;
+}
+
+.cx-widget.cx-theme-light .cx-side-button-group {
+	bottom: 5%;
+	right: 5%;
+	top: auto;
+	transform: rotate(0deg);
+}
+
+.cx-widget.cx-theme-light .cx-side-button.chatIcon {
+	background-image: url(../img/button_openChat.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	box-shadow: none;
+	height: 100px;
+	width: 100px;
+}
+
+.cx-widget.cx-theme-light .cx-webchat {
+	max-height: 567px;
+	width: 400px;
+}
+
+.cx-form-inputs {
+	height: 420px;
+}
+
+.cx-widget.cx-theme-light .cx-form.cx-form-horizontal {
+	height: 492px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript {
+	height: 418px;
+	padding: 0 15px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.star
+	{
+	width: 49px;
+}

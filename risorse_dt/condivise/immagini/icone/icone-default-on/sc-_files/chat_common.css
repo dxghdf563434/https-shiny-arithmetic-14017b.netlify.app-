@@ -1,0 +1,393 @@
+@font-face {
+	font-family: 'textaBlack';
+	src: url("../fonts/Texta-Black.woff") format("woff");
+}
+
+@font-face {
+	font-family: 'textaLightItalic';
+	src: url("../fonts/Texta-LightItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: 'textaRegular';
+	src: url("../fonts/Texta-Regular.woff") format("woff");
+}
+
+.cx-widget.cx-theme-light * {
+	font-family: textaRegular;
+	font-size: 15px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant .cx-bubble .cx-message-text,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble .cx-message-text,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-system.visible
+	{
+	display: inherit !important;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message {
+	padding: 0;
+	margin: 0 !important;
+	margin-top: 6px !important;
+}
+
+.cx-widget.cx-theme-light .cx-side-button.chatIcon.animate {
+	background-image: url(../img/button_chatIdle.gif);
+}
+
+.cx-widget.cx-theme-light .cx-titlebar {
+	background-color: #EEDC00;
+	height: 75px;
+	padding: 0 !important;
+}
+
+.cx-widget.cx-theme-light .cx-titlebar .cx-icon {
+	background-image: url(../img/pix_header.png);
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: 102px;
+	height: 74px;
+	margin: 0;
+	width: 87px;
+}
+
+.cx-widget.cx-theme-light .cx-titlebar .cx-icon.operator {
+	background-image: url(../img/operator_header.png);
+	background-position: center;
+	background-size: 41px;
+}
+
+.cx-widget.cx-theme-light .cx-titlebar .cx-icon.goAway {
+	background-image: url(../img/pix_end.gif);
+	background-position: center;
+}
+
+.cx-widget.cx-theme-light .cx-titlebar .cx-title {
+	color: #0047BB;
+	font-family: textaBlack;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: normal;
+	margin: 20px 0 0;
+	text-transform: uppercase;
+}
+
+.cx-widget.cx-theme-light .cx-titlebar .cx-subtitle {
+	color: #222427;
+	font-family: textaLightItalic;
+	font-size: 16px;
+	font-weight: lighter;
+}
+
+.cx-widget.cx-theme-light .cx-common-container .cx-button-group.cx-buttons-window-control .cx-icon svg *
+	{
+	border-color: black;
+	fill: black;
+}
+
+.cx-widget.cx-theme-light .cx-webchat .cx-alert>.cx-wrapper {
+	margin: 16px;
+}
+
+#connectionTimeout {
+	bottom: 74px;
+	display: none;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 999998;
+}
+
+#connectionTimeout>.cx-wrapper {
+	background-color: #fff;
+	border: 1px solid #eee;
+	height: 100%;
+	margin: 0;
+	padding: 0 24px 24px;
+}
+
+#connectionError, #connectionTimeout .body {
+	background-position: top center;
+	background-repeat: no-repeat;
+	text-align: center;
+}
+
+#connectionError {
+	background-image: url(../img/pix_error.png);
+	background-size: auto 279px;
+	padding-top: 279px;
+}
+
+#connectionTimeout .body {
+	background-image: url(../img/pix_end.gif);
+	background-size: auto 267px;
+	padding-top: 267px;
+}
+
+#connectionError h1 {
+	font-weight: bold;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message .cx-avatar-wrapper,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message .cx-avatar {
+	height: 58px;
+	width: 35px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message .cx-avatar-wrapper
+	{
+	bottom: 0;
+	top: auto;
+}
+
+.cx-avatar, .cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media
+	{
+	background-image: url(../img/pix_chat.png);
+	background-repeat: no-repeat;
+}
+
+.cx-widget.cx-theme-light .cx-carousel .cx-next, .cx-widget.cx-theme-light .cx-carousel .cx-previous
+	{
+	top: 47%;
+}
+
+.cx-widget.cx-theme-light .cx-carousel .cx-previous {
+	left: 18px;
+}
+
+.cx-avatar.operator, .cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media.operator
+	{
+	background-image: url(../img/operator_chat.png);
+}
+
+.cx-avatar.sad, .cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media.sad
+	{
+	background-image: url(../img/pix_chat_sad.png);
+}
+
+.cx-avatar.waiting, .cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media.waiting
+	{
+	background-image: url(../img/pix_chat_waiting.gif);
+}
+
+.cx-avatar {
+	background-position: center bottom;
+	background-size: contain;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant .cx-bubble,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble
+	{
+	display: table !important;
+	color: #222427;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant.cx-them .cx-bubble,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media .cx-generic
+	{
+	background-color: #D9E4F5;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant.cx-them .cx-bubble.operator,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble.operator,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media .cx-generic.operator
+	{
+	background-color: rgba(0, 71, 187, 0.35);
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant.cx-them:last-child .cx-bubble,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them:last-child .cx-bubble
+	{
+	border-bottom-left-radius: 0 !important;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message.cx-agent-typing.cx-them .cx-bubble
+	{
+	border-top-left-radius: 14px !important;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant.cx-you .cx-bubble
+	{
+	background-color: #D0D0D0;
+	margin-left: auto !important;
+	text-align: right;
+	margin-left: auto !important;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant.cx-you:last-child .cx-bubble
+	{
+	border-bottom-right-radius: 0 !important;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media
+	{
+	padding-left: 40px;
+	background-position: bottom left;
+	background-size: 35px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-rich-media.cx-quick-replies
+	{
+	padding-left: 40px;
+	text-align: left;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button,
+	.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-rich-media .cx-button,
+	.cx-widget.cx-theme-light .cx-transcript .cx-rich-media.cx-quick-replies .cx-component.cx-quick-reply
+	{
+	background-color: #FFEC00;
+	border: 1px solid #FFEC00;
+	border-radius: 14px;
+	color: #222427;
+	float: left;
+	font-size: 10px;
+	margin: 2px;
+	padding: 5px 12px;
+	text-transform: uppercase;
+	width: auto;
+}
+
+.cx-widget.cx-theme-light .cx-btn-default, .cx-widget.cx-theme-light .cx-btn-primary
+	{
+	border-color: #FFEC00 !important;
+	background: white;
+	border-radius: 23px;
+	color: #222427;
+}
+
+.cx-widget.cx-theme-light .cx-btn-primary {
+	background: #FFEC00;
+}
+
+.cx-widget.cx-theme-light .cx-input-container {
+	background-color: #ECECEC;
+	height: 74px;
+}
+
+.cx-widget.cx-theme-light .cx-input-container .cx-message-input {
+	font-size: 15px;
+	height: 45px !important;
+	margin: 0;
+	padding: 0 45px 0 0;
+}
+
+.cx-widget.cx-theme-light .cx-send {
+	background-color: #FFEC00;
+	background-image: url("../img/button_send.png");
+	background-position: 9px center;
+	background-repeat: no-repeat;
+	background-size: 24px;
+	border-radius: 100%;
+	display: block !important;
+	height: 45px;
+	width: 45px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.face {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 55px;
+	border: none;
+    border-radius: 0;
+    cursor: pointer;
+    height: 55px;
+    margin: 0;
+    padding: 0;
+    width: 55px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group>.cx-message.cx-participant.welcomeCarouselDialog .cx-bubble {
+	background: none;
+	margin: 0;
+	padding: 0;
+}
+
+#welcomeCarouselContent, #welcomeCarouselSlider, #welcomeCarousel {
+	float: left;
+}
+
+#welcomeCarouselSlider {
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+#welcomeCarouselContent .arrow {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    height: 110px;
+    position: absolute;
+    top: 0;
+    width: 25px;
+    z-index: 1;
+}
+
+#welcomeCarouselContent .arrow.left {
+	background-image: url(../img/welcomeCarousel/arrow_left.png);
+	left: -15px;
+}
+
+#welcomeCarouselContent .arrow.right {
+	background-image: url(../img/welcomeCarousel/arrow_right.png);
+	right: -15px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.welcomeCarouselBtn {
+    background: none;
+    border: 0;
+    margin: 0;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.welcomeCarouselBtn p {
+	text-transform: initial;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.welcomeCarouselBtn img {
+    width: 100%;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.face1 {
+    background-image: url(../img/survey/faces/1.png);
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.face2 {
+    background-image: url(../img/survey/faces/2.png);
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.face3 {
+    background-image: url(../img/survey/faces/3.png);
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.face4 {
+    background-image: url(../img/survey/faces/4.png);
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.face5 {
+    background-image: url(../img/survey/faces/5.png);
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.star
+	{
+	background-image: url(../img/survey/star.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25px;
+	cursor: pointer;
+    font-size: 14px;
+    height: 32px;
+    line-height: 24px;
+}
+
+.cx-widget.cx-theme-light .cx-transcript .cx-message-group .cx-button.star.unclicked
+	{
+	background-color: #d0d0d0;
+	border-color: #d0d0d0;
+}
